@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import '../assets/css/signup.css';
+import styles from './SignUp.module.css';
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
-import ErrorDialogueBox from '../components/MUIDialogueBox/ErrorDialogueBox';
+import ErrorDialogueBox from '../MUIDialogueBox/ErrorDialogueBox';
 
 
 
@@ -20,8 +20,8 @@ function SignupPage() {
   const [passwordValidationMessage, setPasswordValidationMessage] = useState('')
 
 
-  const [errorDialogueBoxOpen,setErrorDialogueBoxOpen] = useState(false);
-  const [errorList,setErrorList] = useState([]);
+  const [errorDialogueBoxOpen, setErrorDialogueBoxOpen] = useState(false);
+  const [errorList, setErrorList] = useState([]);
   const handleDialogueOpen = () => {
     setErrorDialogueBoxOpen(true)
   };
@@ -43,29 +43,29 @@ function SignupPage() {
       confirmPassword: form.confirmPassword.value,
       userType: form.userType.value
     }
-    fetch('http://localhost:3001/signUp',{
+    fetch('http://localhost:3001/signUp', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(user) 
+      body: JSON.stringify(user)
     })
-            .then(response => response.json())
-            .then(data => {
-                let respMessage = data.message;
-                if(respMessage==="success"){
-                  navigate("/");
-                }
-                else{
-                  //TODO: display error message
-                  setErrorList(data.errors);
-                  handleDialogueOpen();
-                }
-            });
+      .then(response => response.json())
+      .then(data => {
+        let respMessage = data.message;
+        if (respMessage === "success") {
+          navigate("/");
+        }
+        else {
+          //TODO: display error message
+          setErrorList(data.errors);
+          handleDialogueOpen();
+        }
+      });
   };
 
   useEffect(() => {
-    if (password.length>0 && password?.trim()?.length <= 6) {
+    if (password.length > 0 && password?.trim()?.length <= 6) {
       setPasswordValidationMessage('Password Length must be greater than 6 characters');
       // setPasswordValidationDisplay('block');
     }
@@ -82,18 +82,18 @@ function SignupPage() {
   }, [password, confirmPassword])
 
   return (
-    <div id="signUpBody">
-      
-      <div id="signUpBG">
-        <div className='greenLayer'>
+    <div id={styles.signUpBody}>
+
+      <div id={styles.signUpBG}>
+        <div className={styles.greenLayer}>
 
         </div>
       </div>
-      <div className="signup-form">
+      <div>
         <h2>Create An Account</h2>
-        <form id="signUpform" name='signUpform' onSubmit={handleSubmit}>
-          <div className='d-flex flex-row mt-5'>
-            <div className='col-6 form-floating mx-2 '>
+        <form id={styles.signUpform} name='signUpform' onSubmit={handleSubmit}>
+          <div className='d-flex flex-column flex-lg-row flex-sm-column mt-5'>
+            <div className='col-12 col-sm-12 col-lg-6  form-floating mx-2 '>
               <input
                 type="text"
                 id="firstName"
@@ -106,7 +106,7 @@ function SignupPage() {
               />
               <label htmlFor="firstName">First Name</label>
             </div>
-            <div className='col-6 form-floating mx-2'>
+            <div className='col-12  col-sm-12 col-lg-6  mt-3 mt-sm-3 mt-lg-0 form-floating mx-2'>
               <input
                 type="text"
                 id="lastName"
@@ -148,7 +148,7 @@ function SignupPage() {
           </div>
           <div
             className="mx-2 text-danger"
-            > {passwordValidationMessage}</div>
+          > {passwordValidationMessage}</div>
           <div className='form-floating mt-3 col-12 mx-2'>
             <input
               type="password"
@@ -188,7 +188,7 @@ function SignupPage() {
             <label className='' htmlFor="terms-chkbox">I agree with the terms and conditons</label>
           </div>
           <div className='text-center'>
-            <button id="signUp" type="submit">Sign Up</button>
+            <button id={styles.signUpBtn} type="submit">Sign Up</button>
           </div>
           <div className='text-center'>
             Already have an account? <NavLink to="/login" exact >Sign In</NavLink>
@@ -200,8 +200,8 @@ function SignupPage() {
         open={errorDialogueBoxOpen}
         handleToClose={handleDialogueClose}
         ErrorTitle="Error Signing Up"
-        ErrorList = {errorList}
-       />
+        ErrorList={errorList}
+      />
     </div>
   );
 }
